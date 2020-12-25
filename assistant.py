@@ -2,6 +2,7 @@
 
 import wolframalpha
 import PySimpleGUI as sg
+import wikipedia
 
 app_id = '7RQEH5-E64LEQHTY8'  # get your own at https://products.wolframalpha.com/api/
 client = wolframalpha.Client(app_id)
@@ -25,7 +26,7 @@ while True:
     res = client.query(values[0])
     sg.popup(next(res.results).text) # Create a popup window to display information
 
-    print(next(res.results).text)
+    #print(next(res.results).text)
 
 # Finish up by removing from the screen
 window.close() 
