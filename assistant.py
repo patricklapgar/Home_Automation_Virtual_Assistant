@@ -4,7 +4,7 @@ import wolframalpha
 import PySimpleGUI as sg
 import wikipedia
 
-app_id = '7RQEH5-E64LEQHTY8'  # get your own at https://products.wolframalpha.com/api/
+app_id = 'API KEY GOES HERE'  # get your own at https://products.wolframalpha.com/api/
 client = wolframalpha.Client(app_id)
 
 sg.theme('Topanga')
