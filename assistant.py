@@ -5,7 +5,7 @@ import PySimpleGUI as sg
 import wikipedia
 import pyttsx3
 
-app_id = '7RQEH5-E64LEQHTY8'  # get your own at https://products.wolframalpha.com/api/
+app_id = 'YOUR API KEY GOES HERE'  # get your own at https://products.wolframalpha.com/api/
 client = wolframalpha.Client(app_id)
 
 engine = pyttsx3.init()
