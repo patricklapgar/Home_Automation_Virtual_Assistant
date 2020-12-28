@@ -6,7 +6,7 @@ import wikipedia
 from gtts import gTTS
 from playsound import playsound
 
-app_id = '7RQEH5-E64LEQHTY8'  # get your own at https://products.wolframalpha.com/api/
+app_id = 'YOUR API KEY GOES HERE'  # get your own at https://products.wolframalpha.com/api/
 client = wolframalpha.Client(app_id)
 
 v = gTTS(text="Hello! Maye I know your name please", lang="en", slow=False)
