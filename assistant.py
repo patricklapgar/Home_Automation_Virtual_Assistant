@@ -26,6 +26,10 @@ layout = [  [sg.Text("Ask me a question")],
 # Create the window
 window = sg.Window('Alexandra', layout)      
 
+voice_question = gTTS(text="Ask me a question", lang="en", slow=False)
+voice_question.save("voice_question.mp3")
+playsound("voice_question.mp3")
+
 while True:
     # Display and interact with the Window
     event, values = window.read()                  
@@ -33,19 +37,20 @@ while True:
     if event in (None, 'Cancel'):
         break
 
-    voice_question = gTTS(text="Ask me a question", lang="en", slow=False)
-    voice_question.save("voice_question.mp3")
-    playsound("voice_question.mp3")
-
     # Do something with the information gathered
     res = client.query(values[0])
     wolfram_response = next(res.results).text
 
     wikipedia_response = wikipedia.summary(values[0], sentences=2)
+    voice_response_wolfram = gTTS(text="A result from Wolfram Alpha show that " + values[0] + " is " + wolfram_response + ".", lang="en")
+    voice_response_wolfram.save("voice_response_wolfram.mp3")
+    playsound("voice_response_wolfram.mp3")
+
+    voice_response_wikipedia = gTTS(text="A result from Wikipedia also shows that: " + wikipedia_response +".", lang="en")
+    voice_response_wikipedia.save("voice_response_wikipedia.mp3")
+    playsound("voice_response_wikipedia.mp3")
+
     sg.popup("Result from Wolfram Alpha show that " + values[0] + " is " + wolfram_response, "A result from Wikipedia also shows that: " + wikipedia_response) # Create a popup window to display information
-    voice_response = gTTS(text="Result from Wolfram Alpha show that " + values[0] + " is " + wolfram_response + ". A result from Wikipedia also shows that: " + wikipedia_response, lang="en")
-    voice_response.save("voice_response.mp3")
-    playsound("voice_response.mp3")
 
     # print(values[0])
 # Finish up by removing from the screen
