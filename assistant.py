@@ -37,21 +37,41 @@ while True:
     if event in (None, 'Cancel'):
         break
 
-    # Do something with the information gathered
-    res = client.query(values[0])
-    wolfram_response = next(res.results).text
+    # Try displaying results from all sources to the user first
+    try:
+        wikipedia_response = wikipedia.summary(values[0], sentences=1)
+        wolfram_response = next(client.query(values[0]).results).text
+        # Output text response
+        sg.PopupNonBlocking("Result from Wolfram Alpha show that " + values[0] + " is " + wolfram_response + "\nA result from Wikipedia also shows that: " + wikipedia_response) # Create a popup window to display information
+   
+        # Use Google Text-To-Speech to play search results
+        voice_response_full = gTTS(text="Result from Wolfram Alpha show that " + values[0] + " is " + wolfram_response + "A result from Wikipedia also shows that: " + wikipedia_response + ".", lang="en")
+        voice_response_full.save("voice_response_full.mp3")
+        playsound("voice_response_full.mp3")
+    
+    # If the wikipedia response doesn't work, then display only the result from wolfram alpha
+    except wikipedia.exceptions.DisambiguationError:
+        wolfram_response = next(client.query(values[0]).results).text
+        sg.PopupNonBlocking(wolfram_response)
+        voice_response_wolfram = gTTS(text="A result from Wolfram Alpha shows that " + values[0] + " is " + wolfram_response + ".", lang="en")
+        voice_response_wolfram.save("voice_response_wolfram.mp3")
+        playsound("voice_response_wolfram.mp3")
+    
+    except wikipedia.exceptions.PageError:
+        wolfram_response = next(client.query(values[0]).results).text
+        sg.PopupNonBlocking(wolfram_response)
+        voice_response_wolfram = gTTS(text="A result from Wolfram Alpha shows that " + values[0] + " is " + wolfram_response + ".", lang="en")
+        voice_response_wolfram.save("voice_response_wolfram.mp3")
+        playsound("voice_response_wolfram.mp3")
+    
+    # If the result from wolfram alpha doesn't work, then display only the result from wikipedia
+    except:
+        wikipedia_response = wikipedia.summary(values[0], sentences=1)
+        sg.PopupNonBlocking(wikipedia_response)
+        voice_response_wikipedia = gTTS(text="A result from Wikipedia also shows that: " + wikipedia_response + ".", lang="en")
+        voice_response_wikipedia.save("voice_response_wikipedia.mp3")
+        playsound("voice_response_wikipedia.mp3")
 
-    wikipedia_response = wikipedia.summary(values[0], sentences=2)
-    voice_response_wolfram = gTTS(text="A result from Wolfram Alpha show that " + values[0] + " is " + wolfram_response + ".", lang="en")
-    voice_response_wolfram.save("voice_response_wolfram.mp3")
-    playsound("voice_response_wolfram.mp3")
 
-    voice_response_wikipedia = gTTS(text="A result from Wikipedia also shows that: " + wikipedia_response +".", lang="en")
-    voice_response_wikipedia.save("voice_response_wikipedia.mp3")
-    playsound("voice_response_wikipedia.mp3")
-
-    sg.popup("Result from Wolfram Alpha show that " + values[0] + " is " + wolfram_response, "A result from Wikipedia also shows that: " + wikipedia_response) # Create a popup window to display information
-
-    # print(values[0])
 # Finish up by removing from the screen
 window.close() 
